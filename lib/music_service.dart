@@ -1,6 +1,25 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// 뮤직 스테이트 : 음악의 상태를 나타냄
+class MusicState {
+  final bool isPlaying;
+
+  MusicState({required this.isPlaying});
+
+  MusicState copyWith({bool? isPlaying}) {
+    return MusicState(
+      isPlaying: isPlaying ?? this.isPlaying,
+    );
+  }
+}
+
+// 뮤직 서비스 프로바이더 : 뮤직 서비스를 제공
+final musicServiceProvider =
+    StateNotifierProvider.autoDispose<MusicService, MusicState>((ref) {
+  return MusicService();
+});
+
 class MusicService extends StateNotifier<MusicState> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
@@ -53,21 +72,3 @@ class MusicService extends StateNotifier<MusicState> {
     super.dispose();
   }
 }
-
-class MusicState {
-  final bool isPlaying;
-
-  MusicState({required this.isPlaying});
-
-  MusicState copyWith({bool? isPlaying}) {
-    return MusicState(
-      isPlaying: isPlaying ?? this.isPlaying,
-    );
-  }
-}
-
-// Provider 생성
-final musicServiceProvider =
-    StateNotifierProvider<MusicService, MusicState>((ref) {
-  return MusicService();
-});

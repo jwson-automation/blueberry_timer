@@ -3,36 +3,43 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'timer_service.dart';
 import 'music_service.dart';
+import 'lottie_service.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
+  const TimerScreen({super.key});
+
   @override
-  _TimerScreenState createState() => _TimerScreenState();
+  TimerScreenState createState() => TimerScreenState();
 }
 
-class _TimerScreenState extends ConsumerState<TimerScreen>
+class TimerScreenState extends ConsumerState<TimerScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _lottieController;
-
   @override
   void initState() {
     super.initState();
-    _lottieController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 2),
-    );
+    ref.read(lottieServiceProvider.notifier).initController(this);
   }
 
   @override
   Widget build(BuildContext context) {
+    // watch : 존재를 지켜보다. 지속적으로 가져오는 상황
     final timerState = ref.watch(timerServiceProvider);
     final musicState = ref.watch(musicServiceProvider);
+    final lottieState = ref.watch(lottieServiceProvider);
 
-    // Lottie Animation Control
-    if (timerState.isRunning) {
-      _lottieController.repeat();
-    } else {
-      _lottieController.stop();
-    }
+    // read : 책, 정보를 읽다. 순간적으로 가져오는 상황
+    final timerNotifier = ref.read(timerServiceProvider.notifier);
+    final musicNotifier = ref.read(musicServiceProvider.notifier);
+    final lottieNotifier = ref.read(lottieServiceProvider.notifier);
+
+    // Use a post-frame callback to handle animation state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (timerState.isRunning && !lottieState.isAnimating) {
+        lottieNotifier.startAnimation();
+      } else if (!timerState.isRunning && lottieState.isAnimating) {
+        lottieNotifier.stopAnimation();
+      }
+    });
 
     return Scaffold(
       body: Center(
@@ -40,19 +47,19 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Lottie Animation
-            Container(
+            SizedBox(
               width: 200,
               height: 200,
               child: Lottie.asset(
                 'assets/lottie/pig.json',
-                controller: _lottieController,
+                controller: lottieNotifier.controller,
                 fit: BoxFit.cover,
               ),
             ),
 
             // Timer Display
             Text(
-              ref.read(timerServiceProvider.notifier).formatTime(),
+              timerNotifier.formatTime(),
               style: TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
@@ -62,7 +69,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
                     blurRadius: 10.0,
                     color:
                         timerState.isStudyPhase ? Colors.cyan : Colors.orange,
-                    offset: Offset(0, 0),
+                    offset: const Offset(0, 0),
                   )
                 ],
               ),
@@ -77,7 +84,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
               ),
             ),
 
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             // Control Buttons
             Row(
@@ -88,24 +95,27 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
                   icon: timerState.isRunning ? Icons.pause : Icons.play_arrow,
                   color: Colors.green,
                   onPressed: timerState.isRunning
-                      ? ref.read(timerServiceProvider.notifier).stopTimer
-                      : ref.read(timerServiceProvider.notifier).startTimer,
+                      ? timerNotifier.stopTimer
+                      : timerNotifier.startTimer,
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 _buildNeonButton(
                   icon: Icons.restart_alt,
                   color: Colors.red,
-                  onPressed: ref.read(timerServiceProvider.notifier).resetTimer,
+                  onPressed: () {
+                    timerNotifier.resetTimer();
+                    lottieNotifier.resetAnimation();
+                  },
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 // Music Control Button
                 _buildNeonButton(
                   icon:
-                      musicState.isPlaying ? Icons.music_off : Icons.music_note,
+                      musicState.isPlaying ? Icons.music_note : Icons.music_off,
                   color: Colors.purple,
                   onPressed: musicState.isPlaying
-                      ? ref.read(musicServiceProvider.notifier).pauseMusic
-                      : ref.read(musicServiceProvider.notifier).playMusic,
+                      ? musicNotifier.pauseMusic
+                      : musicNotifier.playMusic,
                 ),
               ],
             ),
@@ -133,18 +143,12 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          shape: CircleBorder(),
-          padding: EdgeInsets.all(15),
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(15),
         ),
         onPressed: onPressed,
         child: Icon(icon, size: 30, color: Colors.white),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _lottieController.dispose();
-    super.dispose();
   }
 }
