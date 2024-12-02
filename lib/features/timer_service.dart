@@ -35,13 +35,11 @@ final timerServiceProvider =
 // 타이머 서비스 : 타이머를 제어
 class TimerService extends StateNotifier<TimerState> {
   Timer? _timer;
-  final int startTime = 10; // 25분 공부 시간
-  final int breakTime = 10; // 5분 휴식 시간
-  // final int startTime = 25 * 60;  // 25분 공부 시간
-  // final int breakTime = 5 * 60;   // 5분 휴식 시간
+  final int startTime = 3; // 25분 공부 시간
+  final int breakTime = 3; // 5분 휴식 시간
 
   TimerService()
-      : super(TimerState(currentTime: 0, isRunning: false, isStudyPhase: true));
+      : super(TimerState(currentTime: 3, isRunning: false, isStudyPhase: true));
 
   void startTimer() {
     if (!state.isRunning) {
@@ -51,19 +49,23 @@ class TimerService extends StateNotifier<TimerState> {
         if (state.currentTime > 0) {
           state = state.copyWith(currentTime: state.currentTime - 1);
         } else {
-          _switchPhase();
+          if (state.isStudyPhase) {
+            // 스터디 페이즈가 끝났을 때
+            print('🎯 Study phase completed!');
+            state = state.copyWith(
+              currentTime: breakTime,
+              isStudyPhase: false,
+            );
+          } else {
+            // 휴식 페이즈가 끝났을 때
+            print('💤 Break phase completed!');
+            state = state.copyWith(
+              currentTime: startTime,
+              isStudyPhase: true,
+            );
+          }
         }
       });
-    }
-  }
-
-  void _switchPhase() {
-    if (state.isStudyPhase) {
-      // 공부 시간 종료 → 휴식 시작
-      state = state.copyWith(isStudyPhase: false, currentTime: breakTime);
-    } else {
-      // 휴식 시간 종료 → 다시 공부 시작
-      state = state.copyWith(isStudyPhase: true, currentTime: startTime);
     }
   }
 
@@ -71,10 +73,12 @@ class TimerService extends StateNotifier<TimerState> {
     if (state.isRunning) {
       _timer?.cancel();
       state = state.copyWith(isRunning: false);
+      print('⏸️ Timer stopped');
     }
   }
 
   void resetTimer() {
+    print('🔄 Resetting timer...');
     _timer?.cancel();
     state = TimerState(
         currentTime: startTime, isRunning: false, isStudyPhase: true);
@@ -83,13 +87,6 @@ class TimerService extends StateNotifier<TimerState> {
   String formatTime() {
     int minutes = state.currentTime ~/ 60;
     int remainingSeconds = state.currentTime % 60;
-
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
   }
 }
