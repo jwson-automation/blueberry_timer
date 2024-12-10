@@ -6,6 +6,8 @@ import 'package:lottie/lottie.dart';
 import 'features/timer_service.dart';
 import 'features/music_service.dart';
 import 'features/lottie_service.dart';
+import 'package:blueberry_timer/widgets/item_dialog.dart';
+import 'package:blueberry_timer/widgets/app_drawer.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
   const TimerScreen({super.key});
@@ -17,6 +19,7 @@ class TimerScreen extends ConsumerStatefulWidget {
 class TimerScreenState extends ConsumerState<TimerScreen>
     with SingleTickerProviderStateMixin {
   bool _wasStudyPhase = true; // 이전 상태 저장용
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // ScaffoldState를 관리하기 위한 글로벌 키 추가
 
   @override
   void initState() {
@@ -24,7 +27,6 @@ class TimerScreenState extends ConsumerState<TimerScreen>
     ref.read(lottieServiceProvider.notifier).initController(this);
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     // Watching states
@@ -57,6 +59,20 @@ class TimerScreenState extends ConsumerState<TimerScreen>
     });
 
     return Scaffold(
+      key: _scaffoldKey, // ScaffoldState를 관리하기 위한 글로벌 키 추가
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu, color: Colors.white),
+            onPressed: () {
+              _scaffoldKey.currentState?.openEndDrawer(); // 드로어 열기
+            },
+          ),
+        ],
+      ),
+      endDrawer: const AppDrawer(), // 별도의 위젯으로 분리된 드로어
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -70,7 +86,7 @@ class TimerScreenState extends ConsumerState<TimerScreen>
                   width: 200,
                   height: 200,
                   child: Lottie.asset(
-                    'assets/lottie/pig.json',
+                    'assets/lottie/chicken.json',
                     controller: lottieNotifier.controller,
                     fit: BoxFit.cover,
                   ),
@@ -175,31 +191,65 @@ class TimerScreenState extends ConsumerState<TimerScreen>
                   ? itemState.collectedItems[index]
                   : null;
 
-              return Container(
-                decoration: BoxDecoration(
-                  color: item?.backgroundColor ?? Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: item != null
-                        ? Colors.green.shade300
-                        : Colors.grey.shade400,
-                    width: 2,
+              return GestureDetector(
+                onTap: item != null 
+                  ? () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ItemDialog(item: item),
+                      );
+                    }
+                  : null,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: item?.backgroundColor ?? Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: item != null
+                          ? Colors.green.shade300
+                          : Colors.grey.shade400,
+                      width: 2,
+                    ),
                   ),
+                  child: item != null
+                      ? Stack(
+                          children: [
+                            Center(
+                              child: SvgPicture.asset(
+                                item.imagePath,
+                                width: 50,
+                                height: 50,
+                              ),
+                            ),
+                            if (item.quantity > 1)
+                              Positioned(
+                                right: 4,
+                                bottom: 4,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    '${item.quantity}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.add_circle_outline,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
-                child: item != null
-                    ? Center(
-                        child: SvgPicture.asset(
-                          item.imagePath,
-                          width: 50,
-                          height: 50,
-                        ),
-                      )
-                    : const Center(
-                        child: Icon(
-                          Icons.add_circle_outline,
-                          color: Colors.grey,
-                        ),
-                      ),
               );
             },
           ),

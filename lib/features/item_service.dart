@@ -9,7 +9,7 @@ class ItemState {
 
   const ItemState({
     this.collectedItems = const [],
-    required this.availableItems,
+    this.availableItems = const [],
   });
 
   ItemState copyWith({
@@ -30,13 +30,7 @@ final itemServiceProvider =
 });
 
 class ItemService extends StateNotifier<ItemState> {
-  ItemService()
-      : super(ItemState(
-          collectedItems: [],
-          availableItems: itemList, // items.dart에서 가져온 itemList 사용
-        )) {
-    print('🎮 ItemService initialized with ${itemList.length} available items');
-  }
+  ItemService() : super(ItemState(availableItems: itemList));
 
   void collectRandomItem() {
     if (state.availableItems.isNotEmpty) {
@@ -45,17 +39,28 @@ class ItemService extends StateNotifier<ItemState> {
       final collectedItem = state.availableItems[randomIndex];
 
       print('🎁 Collecting new item: ${collectedItem.name}');
-      print(
-          '📊 Available items before collection: ${state.availableItems.length}');
-      print('🏆 Previously collected items: ${state.collectedItems.length}');
+
+      // 이미 수집된 아이템인지 확인하고 수량을 증가시킵니다
+      final updatedCollectedItems = List<Item>.from(state.collectedItems);
+      final existingItemIndex = updatedCollectedItems.indexWhere((item) => item.id == collectedItem.id);
+      
+      if (existingItemIndex != -1) {
+        // 이미 있는 아이템이면 수량을 증가시킨 새 아이템으로 교체
+        final existingItem = updatedCollectedItems[existingItemIndex];
+        updatedCollectedItems[existingItemIndex] = existingItem.copyWith(
+          quantity: existingItem.quantity + 1
+        );
+      } else {
+        // 새로운 아이템이면 추가
+        updatedCollectedItems.add(collectedItem);
+      }
 
       state = ItemState(
-        collectedItems: [...state.collectedItems, collectedItem],
-        availableItems: List.from(state.availableItems)..removeAt(randomIndex),
+        collectedItems: updatedCollectedItems,
+        availableItems: state.availableItems,
       );
 
       print('✨ Item collected successfully!');
-      print('📊 Remaining available items: ${state.availableItems.length}');
       print('🏆 Total collected items: ${state.collectedItems.length}');
     } else {
       print('⚠️ No more items available to collect');
@@ -63,7 +68,6 @@ class ItemService extends StateNotifier<ItemState> {
   }
 
   void resetItems() {
-    print('🔄 Resetting all items...');
     state = ItemState(
       collectedItems: [],
       availableItems: itemList, // items.dart에서 가져온 itemList 사용

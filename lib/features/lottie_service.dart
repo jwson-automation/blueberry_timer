@@ -59,7 +59,9 @@ class LottieService extends StateNotifier<LottieState> {
 
   AnimationController? get controller => _controller;
 
+  @override
   void dispose() {
     _controller?.dispose();
+    super.dispose();
   }
 }
