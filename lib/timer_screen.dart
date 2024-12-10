@@ -8,6 +8,8 @@ import 'features/music_service.dart';
 import 'features/lottie_service.dart';
 import 'package:blueberry_timer/widgets/item_dialog.dart';
 import 'package:blueberry_timer/widgets/app_drawer.dart';
+import 'package:blueberry_timer/widgets/user_profile_dialog.dart';
+import 'package:blueberry_timer/features/user_service.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
   const TimerScreen({super.key});
@@ -34,6 +36,7 @@ class TimerScreenState extends ConsumerState<TimerScreen>
     final musicState = ref.watch(musicServiceProvider);
     final lottieState = ref.watch(lottieServiceProvider);
     final itemState = ref.watch(itemServiceProvider);
+    final userProfile = ref.watch(userServiceProvider).profile;
 
     // Notifiers
     final timerNotifier = ref.read(timerServiceProvider.notifier);
@@ -63,6 +66,16 @@ class TimerScreenState extends ConsumerState<TimerScreen>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: CircleAvatar(
+            backgroundColor: userProfile.primaryColor.withOpacity(0.2),
+            child: Icon(
+              Icons.person,
+              color: userProfile.primaryColor,
+            ),
+          ),
+          onPressed: () => showUserProfileDialog(context),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),

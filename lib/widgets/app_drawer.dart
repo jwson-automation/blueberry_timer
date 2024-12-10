@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:blueberry_timer/mine_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -38,22 +39,30 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('설정'),
+            leading: const Icon(Icons.notifications),
+            title: const Text('공지사항'),
             onTap: () {
+              // 설정 화면으로 이동
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('설정 기능 준비 중입니다.')),
-              );
             },
           ),
           ListTile(
-            leading: const Icon(Icons.bar_chart),
-            title: const Text('통계'),
+            leading: const Icon(Icons.settings),
+            title: const Text('설정'),
             onTap: () {
+              // 설정 화면으로 이동
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('통계 기능 준비 중입니다.')),
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.diamond),
+            title: const Text('광산'),
+            onTap: () {
+              // 광산 화면으로 이동
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MineScreen()),
               );
             },
           ),
@@ -61,34 +70,25 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.help_outline),
             title: const Text('도움말'),
             onTap: () {
+              // 도움말 화면으로 이동
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('도움말 기능 준비 중입니다.')),
-              );
             },
           ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.exit_to_app),
-            title: const Text('앱 정보'),
-            onTap: () {
-              Navigator.pop(context);
-              showAboutDialog(
-                context: context,
-                applicationName: 'Blueberry Timer',
-                applicationVersion: '1.0.0',
-                applicationIcon: Image.asset(
-                  'assets/icon/app_icon.png', // 앱 아이콘 경로 추가 필요
-                  width: 50,
-                  height: 50,
-                ),
-                children: [
-                  const Text('효율적인 공부 시간 관리를 위한 앱입니다.'),
-                  const SizedBox(height: 10),
-                  const Text(' 2024 Blueberry Timer Team'),
-                ],
-              );
-            },
+          AboutListTile(
+            icon: const Icon(Icons.info_outline),
+            applicationName: 'Blueberry Timer',
+            applicationVersion: '1.0.0',
+            applicationIcon: Image.asset(
+              'assets/icon/app_icon.png', // 앱 아이콘 경로 추가 필요
+              width: 50,
+              height: 50,
+            ),
+            applicationLegalese: ' 2024 Blueberry Timer Team',
+            aboutBoxChildren: const [
+              Text('효율적인 공부 시간 관리를 위한 앱입니다.'),
+              SizedBox(height: 10),
+              Text(' 2024 Blueberry Timer Team'),
+            ],
           ),
         ],
       ),
