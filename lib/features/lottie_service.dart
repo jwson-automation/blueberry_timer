@@ -5,14 +5,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class LottieState {
   final bool isAnimating;
   final AnimationStatus? animationStatus;
+  final bool isStudyPhase;
 
-  LottieState({required this.isAnimating, this.animationStatus});
+  LottieState({
+    required this.isAnimating,
+    this.animationStatus,
+    required this.isStudyPhase,
+  });
 
-  LottieState copyWith({bool? isAnimating, AnimationStatus? animationStatus}) {
+  LottieState copyWith({
+    bool? isAnimating,
+    AnimationStatus? animationStatus,
+    bool? isStudyPhase,
+  }) {
     return LottieState(
       isAnimating: isAnimating ?? this.isAnimating,
       animationStatus: animationStatus ?? this.animationStatus,
+      isStudyPhase: isStudyPhase ?? this.isStudyPhase,
     );
+  }
+
+  String get currentAnimation {
+    return isStudyPhase ? 'assets/lottie/study.json' : 'assets/lottie/rest.json';
   }
 }
 
@@ -25,7 +39,7 @@ final lottieServiceProvider =
 class LottieService extends StateNotifier<LottieState> {
   AnimationController? _controller;
 
-  LottieService() : super(LottieState(isAnimating: false));
+  LottieService() : super(LottieState(isAnimating: false, isStudyPhase: true));
 
   void initController(TickerProvider vsync) {
     _controller = AnimationController(
@@ -55,6 +69,10 @@ class LottieService extends StateNotifier<LottieState> {
       _controller!.reset();
       state = state.copyWith(isAnimating: false);
     }
+  }
+
+  void setPhase(bool isStudyPhase) {
+    state = state.copyWith(isStudyPhase: isStudyPhase);
   }
 
   AnimationController? get controller => _controller;

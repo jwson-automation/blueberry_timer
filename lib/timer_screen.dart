@@ -47,7 +47,21 @@ class TimerScreenState extends ConsumerState<TimerScreen>
     // Check if timer is completed to collect random item
     if (_wasStudyPhase && !timerState.isStudyPhase) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        // 공부 시간 업데이트
+        final studyTimeInMinutes = timerState.studyTime;
+        ref.read(userServiceProvider.notifier).addTotalStudyTime(studyTimeInMinutes);
+        ref.read(userServiceProvider.notifier).addExperience(studyTimeInMinutes);
+        
+        // 아이템 수집
         itemNotifier.collectRandomItem();
+        
+        // 로티 애니메이션 변경
+        ref.read(lottieServiceProvider.notifier).setPhase(false);
+      });
+    } else if (!_wasStudyPhase && timerState.isStudyPhase) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // 로티 애니메이션 변경
+        ref.read(lottieServiceProvider.notifier).setPhase(true);
       });
     }
     _wasStudyPhase = timerState.isStudyPhase;
@@ -99,7 +113,7 @@ class TimerScreenState extends ConsumerState<TimerScreen>
                   width: 200,
                   height: 200,
                   child: Lottie.asset(
-                    'assets/lottie/chicken.json',
+                    lottieState.currentAnimation,
                     controller: lottieNotifier.controller,
                     fit: BoxFit.cover,
                   ),

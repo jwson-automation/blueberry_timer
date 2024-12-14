@@ -44,7 +44,17 @@ class UserProfile {
   }
 
   int get experienceToNextLevel {
-    return level * 100; // 레벨업에 필요한 경험치
+    if (level <= 1) {
+      return 60;  // 1시간 (60분)
+    } else if (level == 2) {
+      return 600;  // 10시간 (600분)
+    } else {
+      return 6000;  // 100시간 (6000분)
+    }
+  }
+
+  double get levelProgress {
+    return experience / experienceToNextLevel;
   }
 
   bool get canLevelUp {

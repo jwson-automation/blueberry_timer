@@ -71,7 +71,7 @@ class _MineScreenState extends ConsumerState<MineScreen> with SingleTickerProvid
             height: 200,
             child: mineLottieState.controller != null
                 ? Lottie.asset(
-                    'assets/lottie/pig.json', // 채굴 관련 로티 애니메이션
+                    'assets/lottie/rest.json', // 채굴 관련 로티 애니메이션
                     controller: mineLottieState.controller,
                     fit: BoxFit.cover,
                   )

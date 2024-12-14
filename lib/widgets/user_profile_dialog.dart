@@ -1,3 +1,4 @@
+import 'package:blueberry_timer/widgets/achievement_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/widgets/user_profile_widget.dart';
