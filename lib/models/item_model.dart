@@ -40,14 +40,14 @@ class ItemModel {
 final List<ItemModel> itemList = [
   ItemModel(
     id: '1',
-    name: '좋은 빗자루',
+    name: '책상 청소',
     imagePath: 'assets/items/broom.svg',
     backgroundColor: Colors.amber.shade100,
     description: '아이템 획득 확률을 높여줍니다.',
   ),
   ItemModel(
     id: '2',
-    name: '좋은 연필',
+    name: '단어 암기 카드',
     imagePath: 'assets/items/card.svg',
     backgroundColor: Colors.blue.shade100,
     description: '광산의 채굴 속도가 빨라집니다.',
