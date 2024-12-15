@@ -1,6 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 
+/**
+ * 타이머 기능을 관리하는 서비스입니다.
+ * 
+ * 이 서비스는 다음 기능들을 제공합니다:
+ * - 공부/휴식 시간 타이머 관리
+ * - 타이머 시작, 일시정지, 리셋
+ * - 타이머 상태 및 남은 시간 관리
+ * - 공부/휴식 모드 전환
+ * 
+ * 타이머는 25분 공부, 5분 휴식의 기본 설정을 가지며,
+ * 사용자의 설정에 따라 시간을 조절할 수 있습니다.
+ */
+
 // 타이머 상태
 class TimerState {
   final int currentTime;

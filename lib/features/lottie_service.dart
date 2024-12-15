@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/**
+ * 로티 애니메이션을 관리하는 서비스입니다.
+ * 
+ * 이 서비스는 다음 기능들을 제공합니다:
+ * - 공부/휴식 상태에 따른 캐릭터 애니메이션 전환
+ * - 애니메이션 재생 상태 관리
+ * - 캐릭터 표정과 동작 변경
+ * 
+ * 타이머의 상태에 따라 캐릭터의 모습이 자동으로 변화하며,
+ * 사용자의 학습 진행 상황을 시각적으로 표현합니다.
+ */
+
 // Lottie State: manages the state of the Lottie animation
 class LottieState {
   final bool isAnimating;

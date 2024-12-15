@@ -1,6 +1,18 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/**
+ * 배경 음악을 관리하는 서비스입니다.
+ * 
+ * 이 서비스는 다음 기능들을 제공합니다:
+ * - 공부/휴식 시간에 따른 배경음악 재생
+ * - 음악 재생, 일시정지, 정지
+ * - 볼륨 조절
+ * 
+ * 각 상태(공부/휴식)에 맞는 음악을 자동으로 전환하여 재생하며,
+ * 사용자가 원할 때 음악을 끄거나 켤 수 있습니다.
+ */
+
 // 뮤직 스테이트 : 음악의 상태를 나타냄
 class MusicState {
   final bool isPlaying;

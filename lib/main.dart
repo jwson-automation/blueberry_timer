@@ -4,44 +4,55 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'timer_screen.dart';
 import 'package:blueberry_timer/features/item_service.dart';
-import 'package:blueberry_timer/features/message_service.dart';
 
-// 앱이 시작되는 지점
+/**
+ * BlueberryTimer 앱의 메인 엔트리 포인트입니다.
+ * 
+ * 앱의 기본 설정과 전역 상태를 초기화하고,
+ * MaterialApp과 필요한 Provider들을 설정합니다.
+ * 
+ * 앱 전체에서 사용되는 테마, 다국어 지원, 네비게이션 등을
+ * 이 파일에서 구성합니다.
+ */
+
 void main() {
   runApp(
-    const ProviderScope(child: BlueberryTimerApp()),
+    const ProviderScope(
+      child: BlueberryTimerApp(),
+    ),
   );
 }
 
-// 앱의 루트 위젯
 class BlueberryTimerApp extends StatelessWidget {
   const BlueberryTimerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final messageState = ref.watch(messageServiceProvider);
-        return MaterialApp(
-          navigatorKey: messageState.navigatorKey,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            brightness: Brightness.dark,
-            scaffoldBackgroundColor: Colors.black,
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+      ),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('ko'), // Korean
+      ],
+      builder: (context, child) {
+        return ScaffoldMessenger(
+          child: Scaffold(
+            body: child!,
           ),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en'), // English
-            Locale('ko'), // Korean
-          ],
-          home: const TimerScreen(),
         );
       },
+      home: const TimerScreen(),
     );
   }
 }

@@ -2,6 +2,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/**
+ * 광산 시스템을 관리하는 서비스입니다.
+ * 
+ * 이 서비스는 다음 기능들을 제공합니다:
+ * - 광산 상태 관리
+ * - 채굴 시스템
+ * - 보상 시스템
+ * - 광산 레벨 관리
+ * 
+ * 사용자는 공부 시간을 통해 광산에서 아이템을 채굴할 수 있으며,
+ * 채굴한 아이템은 다양한 보상으로 교환할 수 있습니다.
+ */
+
 class MineResource {
   final String name;
   final String imagePath;

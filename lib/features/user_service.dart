@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/user_info.dart';
 
+/**
+ * 사용자 정보를 관리하는 서비스입니다.
+ * 
+ * 이 서비스는 다음 기능들을 제공합니다:
+ * - 사용자 경험치 관리
+ * - 레벨 시스템
+ * - 학습 통계 기록
+ * - 사용자 설정 관리
+ * 
+ * 공부 시간에 따라 경험치가 쌓이며, 일정 경험치가 모이면
+ * 레벨업이 되는 게임과 같은 시스템을 제공합니다.
+ */
+
 class UserState {
   final UserProfile profile;
   final List<Achievement> unlockedAchievements;
