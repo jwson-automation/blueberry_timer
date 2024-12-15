@@ -100,23 +100,21 @@ class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProv
       endDrawer: const AppDrawer(),
       body: Stack(
         children: [
-          const SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TimerDisplay(),
-                  SizedBox(height: 30),
-                  ControlButtons(),
-                  SizedBox(height: 20),
-                  ItemGrid(),
-                ],
-              ),
+          const Padding(
+            padding: EdgeInsets.only(top: 100),
+            child: Column(
+              children: [
+                TimerDisplay(),
+                SizedBox(height: 30),
+                ControlButtons(),
+                SizedBox(height: 20),
+                ItemGrid(),
+              ],
             ),
           ),
           // 메시지 오버레이
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.3,
+            top: MediaQuery.of(context).size.height * 0.02,
             left: 0,
             right: 0,
             child: ValueListenableBuilder<MessageInfo?>(
