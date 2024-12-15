@@ -1,8 +1,8 @@
+import 'package:blueberry_timer/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:blueberry_timer/user_info.dart';
 
 class ExperienceBar extends StatelessWidget {
-  final UserProfile profile;
+  final UserModel profile;
 
   const ExperienceBar({
     super.key,
@@ -36,7 +36,7 @@ class ExperienceBar extends StatelessWidget {
             value: profile.levelProgress,
             backgroundColor: Colors.grey[200],
             valueColor: AlwaysStoppedAnimation<Color>(
-              profile.primaryColor.withOpacity(0.8),
+              Colors.blueAccent.withOpacity(0.8),
             ),
             minHeight: 10,
           ),

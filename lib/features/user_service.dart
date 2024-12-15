@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:blueberry_timer/user_info.dart';
+import 'package:blueberry_timer/models/user_model.dart';
 
 /**
  * 사용자 정보를 관리하는 서비스입니다.
@@ -16,16 +15,16 @@ import 'package:blueberry_timer/user_info.dart';
  */
 
 class UserState {
-  final UserProfile profile;
+  final UserModel profile;
   final List<Achievement> unlockedAchievements;
 
   const UserState({
-    this.profile = const UserProfile(),
+    this.profile = const UserModel(),
     this.unlockedAchievements = const [],
   });
 
   UserState copyWith({
-    UserProfile? profile,
+    UserModel? profile,
     List<Achievement>? unlockedAchievements,
   }) {
     return UserState(
@@ -48,7 +47,7 @@ class UserService extends StateNotifier<UserState> {
     final newExperience = state.profile.experience + exp;
     final newProfile = state.profile.copyWith(
       experience: newExperience,
-      level: newExperience ~/ 100, // 매 100 경험치마다 레벨업
+      level: state.profile.level
     );
 
     state = state.copyWith(profile: newProfile);
@@ -77,13 +76,24 @@ class UserService extends StateNotifier<UserState> {
     );
   }
 
-  void updateProfileColors(Color primary, Color secondary) {
+  void addMoney(int amount) {
     state = state.copyWith(
       profile: state.profile.copyWith(
-        primaryColor: primary,
-        secondaryColor: secondary,
+        money: state.profile.money + amount,
       ),
     );
+  }
+
+  bool useMoney(int amount) {
+    if (state.profile.money < amount) {
+      return false;  // 잔액 부족
+    }
+    state = state.copyWith(
+      profile: state.profile.copyWith(
+        money: state.profile.money - amount,
+      ),
+    );
+    return true;  // 구매 성공
   }
 }
 

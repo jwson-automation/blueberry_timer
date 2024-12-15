@@ -1,56 +1,43 @@
-import 'package:flutter/material.dart';
-
-class UserProfile {
+class UserModel {
   final String username;
   final int level;
   final int experience;
   final int totalStudyTime;
   final List<Achievement> achievements;
-  final String avatarPath;
-  final Color primaryColor;
-  final Color secondaryColor;
+  final int money;
 
-  const UserProfile({
+  const UserModel({
     this.username = '블루베리',
     this.level = 1,
     this.experience = 0,
     this.totalStudyTime = 0,
     this.achievements = const [],
-    this.avatarPath = 'assets/icon/default_avatar.svg',
-    this.primaryColor = Colors.blueAccent,
-    this.secondaryColor = Colors.lightBlueAccent,
+    this.money = 0,
   });
 
-  UserProfile copyWith({
+  UserModel copyWith({
     String? username,
     int? level,
     int? experience,
     int? totalStudyTime,
     List<Achievement>? achievements,
     String? avatarPath,
-    Color? primaryColor,
-    Color? secondaryColor,
+    int? money,
   }) {
-    return UserProfile(
+    return UserModel(
       username: username ?? this.username,
       level: level ?? this.level,
       experience: experience ?? this.experience,
       totalStudyTime: totalStudyTime ?? this.totalStudyTime,
       achievements: achievements ?? this.achievements,
-      avatarPath: avatarPath ?? this.avatarPath,
-      primaryColor: primaryColor ?? this.primaryColor,
-      secondaryColor: secondaryColor ?? this.secondaryColor,
+      money: money ?? this.money,
     );
   }
 
+  /// 다음 레벨까지 필요한 경험치 계산 (분 단위)
   int get experienceToNextLevel {
-    if (level <= 1) {
-      return 60;  // 1시간 (60분)
-    } else if (level == 2) {
-      return 600;  // 10시간 (600분)
-    } else {
-      return 6000;  // 100시간 (6000분)
-    }
+    // 레벨당 60분(1시간)씩 증가
+    return 60 * level;  // 레벨 1: 60분, 레벨 2: 120분, 레벨 3: 180분...
   }
 
   double get levelProgress {

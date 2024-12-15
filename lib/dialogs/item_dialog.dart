@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../items.dart';
+import '../models/item_model.dart';
 
 class ItemDialog extends StatelessWidget {
-  final Item item;
+  final ItemModel item;
 
   const ItemDialog({
     super.key,

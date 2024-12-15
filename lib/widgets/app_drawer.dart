@@ -1,9 +1,10 @@
+import 'package:blueberry_timer/dialogs/help_dialog.dart';
+import 'package:blueberry_timer/dialogs/notice_dialog.dart';
+import 'package:blueberry_timer/dialogs/ranking_dialog.dart';
+import 'package:blueberry_timer/dialogs/settings_dialog.dart';
 import 'package:blueberry_timer/l10n/app_localizations.dart';
+import 'package:blueberry_timer/screens/mine_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:blueberry_timer/mine_screen.dart';
-import 'package:blueberry_timer/widgets/notice_dialog.dart';
-import 'package:blueberry_timer/widgets/help_dialog.dart';
-import 'package:blueberry_timer/widgets/settings_dialog.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -53,6 +54,25 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.diamond),
+            title: Text(l10n.menuMine),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MineScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.leaderboard),
+            title: const Text('랭킹'),
+            onTap: () {
+              Navigator.pop(context);
+              RankingDialog.show(context);
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: Text(l10n.menuSettings),
             onTap: () {
@@ -66,17 +86,6 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               HelpDialog.show(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.diamond),
-            title: Text(l10n.menuMine),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const MineScreen()),
-              );
             },
           ),
           AboutListTile(

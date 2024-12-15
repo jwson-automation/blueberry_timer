@@ -2,7 +2,7 @@ import 'package:blueberry_timer/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'timer_screen.dart';
+import 'screens/timer_screen.dart';
 import 'package:blueberry_timer/features/item_service.dart';
 
 /**
@@ -46,10 +46,8 @@ class BlueberryTimerApp extends StatelessWidget {
         Locale('ko'), // Korean
       ],
       builder: (context, child) {
-        return ScaffoldMessenger(
-          child: Scaffold(
-            body: child!,
-          ),
+        return Scaffold(
+          body: child!,
         );
       },
       home: const TimerScreen(),

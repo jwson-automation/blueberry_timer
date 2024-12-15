@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../features/item_service.dart';
-import '../../widgets/item_dialog.dart';
+import '../../dialogs/item_dialog.dart';
 
 /// 아이템 그리드 위젯
 class ItemGrid extends ConsumerWidget {
@@ -35,8 +35,8 @@ class ItemGrid extends ConsumerWidget {
           ),
           itemCount: 10, // Always show 10 slots
           itemBuilder: (context, index) {
-            final item = index < itemState.collectedItems.length
-                ? itemState.collectedItems[index]
+            final item = index < itemState.inventory.length
+                ? itemState.inventory[index]
                 : null;
 
             return GestureDetector(
@@ -101,7 +101,7 @@ class ItemGrid extends ConsumerWidget {
             );
           },
         ),
-        if (itemState.collectedItems.isEmpty)
+        if (itemState.inventory.isEmpty)
           Center(
             child: Text(
               l10n.timerNoItems,

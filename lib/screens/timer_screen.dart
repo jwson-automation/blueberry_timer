@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'features/timer_service.dart';
-import 'features/item_service.dart';
-import 'features/user_service.dart';
-import 'features/message_service.dart';
-import 'features/lottie_service.dart';
-import 'widgets/app_drawer.dart';
-import 'widgets/user_profile_dialog.dart';
-import 'widgets/timer/timer_display.dart';
-import 'widgets/timer/control_buttons.dart';
-import 'widgets/timer/item_grid.dart';
+import '../dialogs/user_profile_dialog.dart';
+import '../dialogs/inventory_dialog.dart';
+import '../features/item_service.dart';
+import '../features/lottie_service.dart';
+import '../features/message_service.dart';
+import '../features/pickaxe_service.dart';
+import '../features/timer_service.dart';
+import '../features/user_service.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/current_money_widget.dart';
+import '../widgets/current_rank_widget.dart';
+import '../widgets/timer/control_buttons.dart';
+import '../widgets/timer/equipped_items.dart';
+import '../widgets/timer/timer_display.dart';
 
 /// 타이머 화면
 class TimerScreen extends ConsumerStatefulWidget {
@@ -19,7 +23,8 @@ class TimerScreen extends ConsumerStatefulWidget {
   ConsumerState<TimerScreen> createState() => _TimerScreenState();
 }
 
-class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProviderStateMixin {
+class _TimerScreenState extends ConsumerState<TimerScreen>
+    with SingleTickerProviderStateMixin {
   bool _wasStudyPhase = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -34,7 +39,6 @@ class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProv
     final timerState = ref.watch(timerServiceProvider);
     final itemNotifier = ref.read(itemServiceProvider.notifier);
     final messageService = ref.read(messageServiceProvider);
-    final userProfile = ref.watch(userServiceProvider).profile;
     final lottieState = ref.watch(lottieServiceProvider);
     final lottieNotifier = ref.read(lottieServiceProvider.notifier);
 
@@ -49,6 +53,10 @@ class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProv
         ref
             .read(userServiceProvider.notifier)
             .addExperience(studyTimeInMinutes);
+        
+        // 곡괭이 레벨에 따른 보상 지급
+        final reward = ref.read(pickaxeServiceProvider).pickaxe.baseReward;
+        ref.read(userServiceProvider.notifier).addMoney(reward);
 
         // 아이템 수집 및 메시지 표시
         _onRandomItemCollected(context, itemNotifier, messageService);
@@ -79,16 +87,18 @@ class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProv
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: CircleAvatar(
-            backgroundColor: userProfile.primaryColor.withOpacity(0.2),
+          icon: const CircleAvatar(
+            backgroundColor: Colors.blue,
             child: Icon(
               Icons.person,
-              color: userProfile.primaryColor,
+              color: Colors.white,
             ),
           ),
           onPressed: () => showUserProfileDialog(context),
         ),
         actions: [
+          const CurrentRankWidget(),
+          const CurrentMoneyWidget(),
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),
             onPressed: () {
@@ -100,7 +110,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProv
       endDrawer: const AppDrawer(),
       body: Stack(
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 100),
             child: Column(
               children: [
@@ -108,7 +118,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen> with SingleTickerProv
                 SizedBox(height: 30),
                 ControlButtons(),
                 SizedBox(height: 20),
-                ItemGrid(),
+                EquippedItems(),
               ],
             ),
           ),
