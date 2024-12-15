@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:blueberry_timer/items.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:blueberry_timer/features/message_service.dart';
 
 // Item State
 class ItemState {
@@ -24,6 +26,7 @@ class ItemState {
 }
 
 // Item Service Provider
+final navigatorKey = GlobalKey<NavigatorState>();
 final itemServiceProvider =
     StateNotifierProvider<ItemService, ItemState>((ref) {
   return ItemService();
@@ -32,13 +35,11 @@ final itemServiceProvider =
 class ItemService extends StateNotifier<ItemState> {
   ItemService() : super(ItemState(availableItems: itemList));
 
-  void collectRandomItem() {
+  String? collectRandomItem() {
     if (state.availableItems.isNotEmpty) {
       final random = Random();
       final randomIndex = random.nextInt(state.availableItems.length);
       final collectedItem = state.availableItems[randomIndex];
-
-      print('🎁 Collecting new item: ${collectedItem.name}');
 
       // 이미 수집된 아이템인지 확인하고 수량을 증가시킵니다
       final updatedCollectedItems = List<Item>.from(state.collectedItems);
@@ -50,29 +51,34 @@ class ItemService extends StateNotifier<ItemState> {
         updatedCollectedItems[existingItemIndex] = existingItem.copyWith(
           quantity: existingItem.quantity + 1
         );
+
+        state = ItemState(
+          collectedItems: updatedCollectedItems,
+          availableItems: state.availableItems,
+        );
+
+        return '✨ 아이템 수량이 증가했습니다!';
       } else {
         // 새로운 아이템이면 추가
         updatedCollectedItems.add(collectedItem);
+        
+        state = ItemState(
+          collectedItems: updatedCollectedItems,
+          availableItems: state.availableItems,
+        );
+
+        return '🎁 새로운 아이템을 획득했습니다: ${collectedItem.name}';
       }
-
-      state = ItemState(
-        collectedItems: updatedCollectedItems,
-        availableItems: state.availableItems,
-      );
-
-      print('✨ Item collected successfully!');
-      print('🏆 Total collected items: ${state.collectedItems.length}');
     } else {
-      print('⚠️ No more items available to collect');
+      return '⚠️ 더 이상 수집할 수 있는 아이템이 없습니다';
     }
   }
 
-  void resetItems() {
+  String resetItems() {
     state = ItemState(
       collectedItems: [],
-      availableItems: itemList, // items.dart에서 가져온 itemList 사용
+      availableItems: itemList,
     );
-    print(
-        '✅ Items reset complete. All ${itemList.length} items are now available');
+    return '✅ 아이템이 초기화되었습니다. 총 ${itemList.length}개의 아이템을 수집할 수 있습니다.';
   }
 }

@@ -1,13 +1,19 @@
+import 'package:blueberry_timer/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:blueberry_timer/mine_screen.dart';
+import 'package:blueberry_timer/widgets/notice_dialog.dart';
+import 'package:blueberry_timer/widgets/help_dialog.dart';
+import 'package:blueberry_timer/widgets/settings_dialog.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Drawer(
-      width: MediaQuery.of(context).size.width / 2, // 화면 너비의 절반으로 조정
+      width: MediaQuery.of(context).size.width / 2,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -15,22 +21,22 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.cyan.shade700,
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Blueberry Timer',
-                  style: TextStyle(
+                  l10n.appName,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  '공부의 시간을 더욱 효율적으로',
-                  style: TextStyle(
+                  l10n.appSlogan,
+                  style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 14,
                   ),
@@ -40,25 +46,32 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.notifications),
-            title: const Text('공지사항'),
+            title: Text(l10n.menuNotice),
             onTap: () {
-              // 설정 화면으로 이동
               Navigator.pop(context);
+              NoticeDialog.show(context);
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('설정'),
+            title: Text(l10n.menuSettings),
             onTap: () {
-              // 설정 화면으로 이동
               Navigator.pop(context);
+              SettingsDialog.show(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.help),
+            title: Text(l10n.menuHelp),
+            onTap: () {
+              Navigator.pop(context);
+              HelpDialog.show(context);
             },
           ),
           ListTile(
             leading: const Icon(Icons.diamond),
-            title: const Text('광산'),
+            title: Text(l10n.menuMine),
             onTap: () {
-              // 광산 화면으로 이동
               Navigator.pop(context);
               Navigator.push(
                 context,
@@ -66,29 +79,17 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.help_outline),
-            title: const Text('도움말'),
-            onTap: () {
-              // 도움말 화면으로 이동
-              Navigator.pop(context);
-            },
-          ),
           AboutListTile(
             icon: const Icon(Icons.info_outline),
-            applicationName: 'Blueberry Timer',
-            applicationVersion: '1.0.0',
-            applicationIcon: Image.asset(
-              'assets/icon/app_icon.png', // 앱 아이콘 경로 추가 필요
-              width: 50,
-              height: 50,
-            ),
-            applicationLegalese: ' 2024 Blueberry Timer Team',
-            aboutBoxChildren: const [
-              Text('효율적인 공부 시간 관리를 위한 앱입니다.'),
-              SizedBox(height: 10),
-              Text(' 2024 Blueberry Timer Team'),
+            applicationName: l10n.appName,
+            applicationVersion: l10n.aboutVersion,
+            applicationLegalese: l10n.aboutCopyright,
+            aboutBoxChildren: [
+              Text(l10n.aboutDescription),
+              const SizedBox(height: 10),
+              Text(l10n.aboutTeam),
             ],
+            child: Text(l10n.menuAbout),
           ),
         ],
       ),

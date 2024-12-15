@@ -10,6 +10,8 @@ import 'package:blueberry_timer/widgets/item_dialog.dart';
 import 'package:blueberry_timer/widgets/app_drawer.dart';
 import 'package:blueberry_timer/widgets/user_profile_dialog.dart';
 import 'package:blueberry_timer/features/user_service.dart';
+import 'package:blueberry_timer/features/message_service.dart';
+import 'package:blueberry_timer/l10n/app_localizations.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
   const TimerScreen({super.key});
@@ -37,12 +39,14 @@ class TimerScreenState extends ConsumerState<TimerScreen>
     final lottieState = ref.watch(lottieServiceProvider);
     final itemState = ref.watch(itemServiceProvider);
     final userProfile = ref.watch(userServiceProvider).profile;
+    final l10n = AppLocalizations.of(context)!;
 
     // Notifiers
     final timerNotifier = ref.read(timerServiceProvider.notifier);
     final musicNotifier = ref.read(musicServiceProvider.notifier);
     final lottieNotifier = ref.read(lottieServiceProvider.notifier);
     final itemNotifier = ref.read(itemServiceProvider.notifier);
+    final messageNotifier = ref.read(messageServiceProvider.notifier);
 
     // Check if timer is completed to collect random item
     if (_wasStudyPhase && !timerState.isStudyPhase) {
@@ -52,8 +56,11 @@ class TimerScreenState extends ConsumerState<TimerScreen>
         ref.read(userServiceProvider.notifier).addTotalStudyTime(studyTimeInMinutes);
         ref.read(userServiceProvider.notifier).addExperience(studyTimeInMinutes);
         
-        // 아이템 수집
-        itemNotifier.collectRandomItem();
+        // 아이템 수집 및 메시지 표시
+        final itemMessage = ref.read(itemServiceProvider.notifier).collectRandomItem();
+        if (itemMessage != null) {
+          ref.read(messageServiceProvider.notifier).showInfo(itemMessage);
+        }
         
         // 로티 애니메이션 변경
         ref.read(lottieServiceProvider.notifier).setPhase(false);
@@ -141,7 +148,7 @@ class TimerScreenState extends ConsumerState<TimerScreen>
 
                 // Phase Indicator
                 Text(
-                  timerState.isStudyPhase ? 'Study Time' : 'Rest Time',
+                  timerState.isStudyPhase ? l10n.timerStudyPhase : l10n.timerRestPhase,
                   style: TextStyle(
                     fontSize: 20,
                     color:
@@ -193,9 +200,9 @@ class TimerScreenState extends ConsumerState<TimerScreen>
           const SizedBox(height: 20),
 
           // Item Grid
-          const Text(
-            'Collected Items',
-            style: TextStyle(
+          Text(
+            l10n.timerCollectedItems,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -280,6 +287,16 @@ class TimerScreenState extends ConsumerState<TimerScreen>
               );
             },
           ),
+          if (itemState.collectedItems.isEmpty)
+            Center(
+              child: Text(
+                l10n.timerNoItems,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 16,
+                ),
+              ),
+            ),
         ],
       ),
     );
