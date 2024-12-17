@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/features/mine_service.dart';
+import 'package:blueberry_timer/models/mine_lottie_state.dart';
 
 /**
  * 광산 캐릭터의 로티 애니메이션을 관리하는 서비스입니다.
@@ -14,26 +15,6 @@ import 'package:blueberry_timer/features/mine_service.dart';
  * 채굴 진행 상황에 따라 캐릭터의 모습이 변화하며,
  * 사용자의 채굴 활동을 시각적으로 표현합니다.
  */
-
-class MineLottieState {
-  final AnimationController? controller;
-  final bool isAnimating;
-
-  MineLottieState({
-    this.controller,
-    this.isAnimating = false,
-  });
-
-  MineLottieState copyWith({
-    AnimationController? controller,
-    bool? isAnimating,
-  }) {
-    return MineLottieState(
-      controller: controller ?? this.controller,
-      isAnimating: isAnimating ?? this.isAnimating,
-    );
-  }
-}
 
 class MineLottieService extends StateNotifier<MineLottieState> {
   final Ref ref;

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/models/user_model.dart';
+import 'package:blueberry_timer/models/user_state.dart';
 
 /**
  * 사용자 정보를 관리하는 서비스입니다.
@@ -13,26 +14,6 @@ import 'package:blueberry_timer/models/user_model.dart';
  * 공부 시간에 따라 경험치가 쌓이며, 일정 경험치가 모이면
  * 레벨업이 되는 게임과 같은 시스템을 제공합니다.
  */
-
-class UserState {
-  final UserModel profile;
-  final List<Achievement> unlockedAchievements;
-
-  const UserState({
-    this.profile = const UserModel(),
-    this.unlockedAchievements = const [],
-  });
-
-  UserState copyWith({
-    UserModel? profile,
-    List<Achievement>? unlockedAchievements,
-  }) {
-    return UserState(
-      profile: profile ?? this.profile,
-      unlockedAchievements: unlockedAchievements ?? this.unlockedAchievements,
-    );
-  }
-}
 
 class UserService extends StateNotifier<UserState> {
   UserService() : super(UserState());

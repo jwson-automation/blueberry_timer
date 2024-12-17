@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:blueberry_timer/models/music_model.dart';
 
 /**
  * 배경 음악을 관리하는 서비스입니다.
@@ -13,32 +14,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
  * 사용자가 원할 때 음악을 끄거나 켤 수 있습니다.
  */
 
-// 뮤직 스테이트 : 음악의 상태를 나타냄
-class MusicState {
-  final bool isPlaying;
-
-  MusicState({required this.isPlaying});
-
-  MusicState copyWith({bool? isPlaying}) {
-    return MusicState(
-      isPlaying: isPlaying ?? this.isPlaying,
-    );
-  }
-}
-
 // 뮤직 서비스 프로바이더 : 뮤직 서비스를 제공
 final musicServiceProvider =
-    StateNotifierProvider.autoDispose<MusicService, MusicState>((ref) {
+    StateNotifierProvider.autoDispose<MusicService, MusicModel>((ref) {
   return MusicService();
 });
 
-class MusicService extends StateNotifier<MusicState> {
+class MusicService extends StateNotifier<MusicModel> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   static const String backgroundMusicPath =
       'music/Silent Night - The Soundlings.mp3';
 
-  MusicService() : super(MusicState(isPlaying: false)) {
+  MusicService() : super(MusicModel(isPlaying: false)) {
     // 추가 설정
     _audioPlayer.setReleaseMode(ReleaseMode.loop); // 반복 재생
     _audioPlayer.setPlayerMode(PlayerMode.mediaPlayer); // 고품질 모드

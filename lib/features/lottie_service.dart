@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:blueberry_timer/models/lottie_state.dart';
 
 /**
  * 로티 애니메이션을 관리하는 서비스입니다.
@@ -12,35 +13,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
  * 타이머의 상태에 따라 캐릭터의 모습이 자동으로 변화하며,
  * 사용자의 학습 진행 상황을 시각적으로 표현합니다.
  */
-
-// Lottie State: manages the state of the Lottie animation
-class LottieState {
-  final bool isAnimating;
-  final AnimationStatus? animationStatus;
-  final bool isStudyPhase;
-
-  LottieState({
-    required this.isAnimating,
-    this.animationStatus,
-    required this.isStudyPhase,
-  });
-
-  LottieState copyWith({
-    bool? isAnimating,
-    AnimationStatus? animationStatus,
-    bool? isStudyPhase,
-  }) {
-    return LottieState(
-      isAnimating: isAnimating ?? this.isAnimating,
-      animationStatus: animationStatus ?? this.animationStatus,
-      isStudyPhase: isStudyPhase ?? this.isStudyPhase,
-    );
-  }
-
-  String get currentAnimation {
-    return isStudyPhase ? 'assets/lottie/study.json' : 'assets/lottie/rest.json';
-  }
-}
 
 // Lottie Service Provider: provides Lottie animation control
 final lottieServiceProvider =

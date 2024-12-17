@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:blueberry_timer/models/timer_model.dart';
 import 'dart:async';
 
 /**
@@ -13,35 +14,6 @@ import 'dart:async';
  * 타이머는 25분 공부, 5분 휴식의 기본 설정을 가지며,
  * 사용자의 설정에 따라 시간을 조절할 수 있습니다.
  */
-
-// 타이머 상태
-class TimerState {
-  final int currentTime;
-  final bool isRunning;
-  final bool isStudyPhase;
-  final int studyTime;  // 설정된 공부 시간
-
-  TimerState({
-    required this.currentTime,
-    required this.isRunning,
-    required this.isStudyPhase,
-    required this.studyTime,
-  });
-
-  TimerState copyWith({
-    int? currentTime,
-    bool? isRunning,
-    bool? isStudyPhase,
-    int? studyTime,
-  }) {
-    return TimerState(
-      currentTime: currentTime ?? this.currentTime,
-      isRunning: isRunning ?? this.isRunning,
-      isStudyPhase: isStudyPhase ?? this.isStudyPhase,
-      studyTime: studyTime ?? this.studyTime,
-    );
-  }
-}
 
 // 타이머 서비스 프로바이더 : 타이머 서비스를 제공
 final timerServiceProvider =

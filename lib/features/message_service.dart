@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:blueberry_timer/models/message_info.dart';
 
 /**
  * 앱 내의 알림 메시지를 처리하는 서비스입니다.
@@ -11,17 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
  * 메시지는 애니메이션과 함께 표시되며 자동으로 사라집니다.
  * 기본 지속 시간은 1.5초이며, 메시지마다 다른 색상을 사용하여 구분합니다.
  */
-
-/// 메시지 정보를 담는 클래스
-class MessageInfo {
-  final String message;
-  final Color backgroundColor;
-
-  MessageInfo({
-    required this.message,
-    required this.backgroundColor,
-  });
-}
 
 /// MessageService의 전역 Provider
 final messageServiceProvider = Provider((ref) => MessageService());

@@ -1,21 +1,6 @@
+import 'package:blueberry_timer/models/pickaxe_model.dart';
+import 'package:blueberry_timer/models/pickaxe_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/pickaxe_model.dart';
-
-class PickaxeState {
-  final PickaxeModel pickaxe;
-
-  const PickaxeState({
-    required this.pickaxe,
-  });
-
-  PickaxeState copyWith({
-    PickaxeModel? pickaxe,
-  }) {
-    return PickaxeState(
-      pickaxe: pickaxe ?? this.pickaxe,
-    );
-  }
-}
 
 class PickaxeService extends StateNotifier<PickaxeState> {
   PickaxeService()

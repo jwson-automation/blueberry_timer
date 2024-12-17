@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../dialogs/user_profile_dialog.dart';
-import '../dialogs/inventory_dialog.dart';
-import '../features/item_service.dart';
-import '../features/lottie_service.dart';
-import '../features/message_service.dart';
-import '../features/pickaxe_service.dart';
-import '../features/timer_service.dart';
-import '../features/user_service.dart';
-import '../widgets/app_drawer.dart';
-import '../widgets/current_money_widget.dart';
-import '../widgets/current_rank_widget.dart';
-import '../widgets/timer/control_buttons.dart';
-import '../widgets/timer/equipped_items.dart';
-import '../widgets/timer/timer_display.dart';
+import 'package:blueberry_timer/dialogs/user_profile_dialog.dart';
+import 'package:blueberry_timer/features/item_service.dart';
+import 'package:blueberry_timer/features/lottie_service.dart';
+import 'package:blueberry_timer/features/message_service.dart';
+import 'package:blueberry_timer/features/pickaxe_service.dart';
+import 'package:blueberry_timer/features/timer_service.dart';
+import 'package:blueberry_timer/features/user_service.dart';
+import 'package:blueberry_timer/widgets/app_drawer.dart';
+import 'package:blueberry_timer/widgets/current_money_widget.dart';
+import 'package:blueberry_timer/widgets/current_rank_widget.dart';
+import 'package:blueberry_timer/widgets/timer/control_buttons.dart';
+import 'package:blueberry_timer/widgets/timer/equipped_items.dart';
+import 'package:blueberry_timer/widgets/timer/timer_display.dart';
+import 'package:blueberry_timer/models/message_info.dart';
 
 /// 타이머 화면
 class TimerScreen extends ConsumerStatefulWidget {
