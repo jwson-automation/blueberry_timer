@@ -53,18 +53,6 @@ class MineService extends StateNotifier<MineState> {
     return null;
   }
 
-  void upgradePickaxe() {
-    if (state.pickaxeLevel < 5) {
-      state = state.copyWith(pickaxeLevel: state.pickaxeLevel + 1);
-    }
-  }
-
-  void upgradeEnergy() {
-    if (state.energyLevel < 5) {
-      state = state.copyWith(energyLevel: state.energyLevel + 1);
-    }
-  }
-
   void restoreEnergy() {
     final maxEnergy = state.energyLevel * 100;
     state = state.copyWith(

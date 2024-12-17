@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class MineState {
   final List<MineResource> availableResources;
   final List<MineResource> collectedResources;
-  final int pickaxeLevel;
   final int energyLevel;
   final int currentEnergy;
   final DateTime lastMineTime;
@@ -47,7 +46,6 @@ class MineState {
   MineState({
     this.availableResources = _defaultResources,
     this.collectedResources = const [],
-    this.pickaxeLevel = 1,
     this.energyLevel = 1,
     this.currentEnergy = 100,
     DateTime? lastMineTime,
@@ -56,7 +54,6 @@ class MineState {
   MineState copyWith({
     List<MineResource>? availableResources,
     List<MineResource>? collectedResources,
-    int? pickaxeLevel,
     int? energyLevel,
     int? currentEnergy,
     DateTime? lastMineTime,
@@ -64,7 +61,6 @@ class MineState {
     return MineState(
       availableResources: availableResources ?? this.availableResources,
       collectedResources: collectedResources ?? this.collectedResources,
-      pickaxeLevel: pickaxeLevel ?? this.pickaxeLevel,
       energyLevel: energyLevel ?? this.energyLevel,
       currentEnergy: currentEnergy ?? this.currentEnergy,
       lastMineTime: lastMineTime ?? this.lastMineTime,

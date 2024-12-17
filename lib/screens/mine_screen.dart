@@ -1,4 +1,5 @@
 import 'package:blueberry_timer/models/mine_state.dart';
+import 'package:blueberry_timer/models/pickaxe_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -66,15 +67,10 @@ class _MineScreenState extends ConsumerState<MineScreen>
           CurrentMoneyWidget(),
         ],
       ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 에너지 및 레벨 정보
-            _buildEnergyAndLevelSection(mineState),
-
-            const SizedBox(height: 30),
-
             // 로티 애니메이션
             SizedBox(
               width: 200,
@@ -153,54 +149,6 @@ class _MineScreenState extends ConsumerState<MineScreen>
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildEnergyAndLevelSection(MineState mineState) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Column(
-            children: [
-              Text(
-                '에너지',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                '${mineState.currentEnergy} / ${mineState.energyLevel * 100}',
-                style: TextStyle(
-                  color:
-                      mineState.currentEnergy > 50 ? Colors.green : Colors.red,
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Text(
-                '곡괭이 레벨',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                '${mineState.pickaxeLevel}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

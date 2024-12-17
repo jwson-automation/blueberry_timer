@@ -26,9 +26,18 @@ class UserService extends StateNotifier<UserState> {
 
   void addExperience(int exp) {
     final newExperience = state.profile.experience + exp;
+    
+    // 레벨업 로직 추가
+    int newLevel = state.profile.level;
+    int requiredExp = newLevel * 60; // 레벨당 60분 필요
+
+    if (newExperience >= requiredExp) {
+      newLevel++;
+    }
+
     final newProfile = state.profile.copyWith(
       experience: newExperience,
-      level: state.profile.level
+      level: newLevel
     );
 
     state = state.copyWith(profile: newProfile);
