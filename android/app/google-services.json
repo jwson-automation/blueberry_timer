@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "371460217049",
+    "project_id": "blueberry-timer",
+    "storage_bucket": "blueberry-timer.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371460217049:android:550b3f162855b9d2b286c8",
+        "android_client_info": {
+          "package_name": "com.blueberry.timer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATP-HKAQW-L8jn1g6R_Nvdh7eyqDLWOEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
