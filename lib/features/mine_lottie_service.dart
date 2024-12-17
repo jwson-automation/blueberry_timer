@@ -20,7 +20,7 @@ class MineLottieService extends StateNotifier<MineLottieState> {
   final Ref ref;
   Timer? _autoMiningTimer;
 
-  MineLottieService(this.ref) : super(MineLottieState());
+  MineLottieService(this.ref) : super(const MineLottieState());
 
   void initController(TickerProvider vsync) {
     if (state.controller == null) {

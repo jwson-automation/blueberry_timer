@@ -39,9 +39,7 @@ class _MineScreenState extends ConsumerState<MineScreen>
     final mineState = ref.watch(mineServiceProvider);
     final mineService = ref.read(mineServiceProvider.notifier);
     final mineLottieState = ref.watch(mineLottieServiceProvider);
-    final pickaxe = ref
-        .watch(pickaxeServiceProvider)
-        .pickaxe;
+    final pickaxe = ref.watch(pickaxeServiceProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -83,10 +81,10 @@ class _MineScreenState extends ConsumerState<MineScreen>
               height: 200,
               child: mineLottieState.controller != null
                   ? Lottie.asset(
-                'assets/lottie/study.json', // 채굴 관련 로티 애니메이션
-                controller: mineLottieState.controller,
-                fit: BoxFit.cover,
-              )
+                      'assets/lottie/study.json', // 채굴 관련 로티 애니메이션
+                      controller: mineLottieState.controller,
+                      fit: BoxFit.cover,
+                    )
                   : const SizedBox.shrink(),
             ),
 
@@ -110,17 +108,11 @@ class _MineScreenState extends ConsumerState<MineScreen>
                   const SizedBox(height: 8),
                   Text(
                     'Lv.${pickaxe.level} 곡괭이',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
                     pickaxe.rewardDescription,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyLarge,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),
@@ -184,7 +176,7 @@ class _MineScreenState extends ConsumerState<MineScreen>
                 '${mineState.currentEnergy} / ${mineState.energyLevel * 100}',
                 style: TextStyle(
                   color:
-                  mineState.currentEnergy > 50 ? Colors.green : Colors.red,
+                      mineState.currentEnergy > 50 ? Colors.green : Colors.red,
                   fontSize: 18,
                 ),
               ),

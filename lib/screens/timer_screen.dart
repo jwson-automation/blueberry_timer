@@ -53,9 +53,9 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
         ref
             .read(userServiceProvider.notifier)
             .addExperience(studyTimeInMinutes);
-        
+
         // 곡괭이 레벨에 따른 보상 지급
-        final reward = ref.read(pickaxeServiceProvider).pickaxe.baseReward;
+        final reward = ref.read(pickaxeServiceProvider).baseReward;
         ref.read(userServiceProvider.notifier).addMoney(reward);
 
         // 아이템 수집 및 메시지 표시
