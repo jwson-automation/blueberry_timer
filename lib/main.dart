@@ -1,4 +1,3 @@
-import 'package:blueberry_timer/firebase_options.dart';
 import 'package:blueberry_timer/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +17,8 @@ import 'package:blueberry_timer/features/item_service.dart';
  */
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     const ProviderScope(
       child: BlueberryTimerApp(),
