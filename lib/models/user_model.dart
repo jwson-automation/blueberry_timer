@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class UserModel {
   final String username;
   final int level;
@@ -14,6 +16,30 @@ class UserModel {
     this.achievements = const [],
     this.money = 0,
   });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      username: json['username'] ?? '블루베리',
+      level: json['level'] ?? 1,
+      experience: json['experience'] ?? 0,
+      totalStudyTime: json['totalStudyTime'] ?? 0,
+      money: json['money'] ?? 0,
+      achievements: (json['achievements'] as List?)
+          ?.map((achievementJson) => Achievement.fromJson(achievementJson))
+          .toList() ?? [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'level': level,
+      'experience': experience,
+      'totalStudyTime': totalStudyTime,
+      'money': money,
+      'achievements': achievements.map((achievement) => achievement.toJson()).toList(),
+    };
+  }
 
   UserModel copyWith({
     String? username,
@@ -63,6 +89,31 @@ class Achievement {
     required this.dateEarned,
     required this.type,
   });
+
+  factory Achievement.fromJson(Map<String, dynamic> json) {
+    return Achievement(
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      iconPath: json['iconPath'] ?? '',
+      dateEarned: json['dateEarned'] is String 
+          ? DateTime.parse(json['dateEarned']) 
+          : DateTime.now(),
+      type: AchievementType.values.firstWhere(
+        (type) => type.toString().split('.').last == json['type'], 
+        orElse: () => AchievementType.studyTime
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'iconPath': iconPath,
+      'dateEarned': dateEarned.toIso8601String(),
+      'type': type.toString().split('.').last,
+    };
+  }
 }
 
 enum AchievementType {

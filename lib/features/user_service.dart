@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/models/user_model.dart';
 import 'package:blueberry_timer/models/user_state.dart';
+import 'package:blueberry_timer/repositories/user_repository.dart';
 
 /**
  * 사용자 정보를 관리하는 서비스입니다.
@@ -15,8 +17,10 @@ import 'package:blueberry_timer/models/user_state.dart';
  * 레벨업이 되는 게임과 같은 시스템을 제공합니다.
  */
 
-class UserService extends StateNotifier<UserState> {
-  UserService() : super(UserState());
+class UserNotifier extends StateNotifier<UserState> {
+  final UserRepository _userRepository;
+
+  UserNotifier(this._userRepository) : super(UserState());
 
   void updateUsername(String newUsername) {
     state = state.copyWith(
@@ -85,8 +89,59 @@ class UserService extends StateNotifier<UserState> {
     );
     return true;  // 구매 성공
   }
+
+  // Firebase에 사용자 데이터 저장
+  Future<void> saveUserToFirebase() async {
+    try {
+      await _userRepository.saveUser(state.profile);
+    } catch (e) {
+      print('사용자 데이터 저장 중 오류 발생: $e');
+    }
+  }
+
+  // Firebase에서 사용자 데이터 불러오기
+  Future<void> loadUserFromFirebase() async {
+    try {
+      final loadedProfile = await _userRepository.fetchUser();
+      
+      if (loadedProfile != null) {
+        state = state.copyWith(
+          profile: loadedProfile,
+          unlockedAchievements: loadedProfile.achievements,
+        );
+      }
+    } catch (e) {
+      print('사용자 데이터 불러오기 중 오류 발생: $e');
+    }
+  }
+
+  // JSON 문자열로 상태 직렬화
+  String serializeState() {
+    return json.encode(state.profile.toJson());
+  }
+
+  // JSON 문자열에서 상태 역직렬화
+  void deserializeState(String jsonString) {
+    try {
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final loadedProfile = UserModel.fromJson(jsonMap);
+      
+      state = state.copyWith(
+        profile: loadedProfile,
+        unlockedAchievements: loadedProfile.achievements,
+      );
+    } catch (e) {
+      print('상태 역직렬화 중 오류 발생: $e');
+    }
+  }
 }
 
-final userServiceProvider = StateNotifierProvider<UserService, UserState>((ref) {
-  return UserService();
+// Riverpod Provider 업데이트
+final userRepositoryProvider = Provider<UserRepository>((ref) {
+  return UserRepository();
+});
+
+final userServiceProvider = StateNotifierProvider<UserNotifier, UserState>((ref) {
+  final userRepository = ref.read(userRepositoryProvider);
+  return UserNotifier(userRepository);
 });
