@@ -2,6 +2,7 @@ import 'package:blueberry_timer/dialogs/help_dialog.dart';
 import 'package:blueberry_timer/dialogs/notice_dialog.dart';
 import 'package:blueberry_timer/dialogs/ranking_dialog.dart';
 import 'package:blueberry_timer/dialogs/settings_dialog.dart';
+import 'package:blueberry_timer/dialogs/admin_dialog.dart';
 import 'package:blueberry_timer/l10n/app_localizations.dart';
 import 'package:blueberry_timer/screens/mine_screen.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +100,14 @@ class AppDrawer extends StatelessWidget {
               Text(l10n.aboutTeam),
             ],
             child: Text(l10n.menuAbout),
+          ),
+          ListTile(
+            leading: const Icon(Icons.admin_panel_settings),
+            title: const Text('관리자'),
+            onTap: () {
+              Navigator.pop(context);
+              AdminDialog.show(context);
+            },
           ),
         ],
       ),

@@ -24,6 +24,6 @@ class LottieState {
   }
 
   String get currentAnimation {
-    return isStudyPhase ? 'assets/lottie/study.json' : 'assets/lottie/rest.json';
+    return isStudyPhase ? 'assets/lottie/mine.json' : 'assets/lottie/stop.json';
   }
 }

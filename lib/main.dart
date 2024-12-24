@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/timer_screen.dart';
 import 'package:blueberry_timer/features/item_service.dart';
+import 'package:blueberry_timer/providers/user_provider.dart';
 
 /**
  * BlueberryTimer 앱의 메인 엔트리 포인트입니다.

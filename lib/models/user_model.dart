@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 class UserModel {
+  final String uid;
   final String username;
   final int level;
   final int experience;
@@ -9,6 +8,7 @@ class UserModel {
   final int money;
 
   const UserModel({
+    this.uid = '',
     this.username = '블루베리',
     this.level = 1,
     this.experience = 0,
@@ -19,6 +19,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
+      uid: json['uid'] ?? '',
       username: json['username'] ?? '블루베리',
       level: json['level'] ?? 1,
       experience: json['experience'] ?? 0,
@@ -32,6 +33,7 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'uid': uid,
       'username': username,
       'level': level,
       'experience': experience,
@@ -42,6 +44,7 @@ class UserModel {
   }
 
   UserModel copyWith({
+    String? uid,
     String? username,
     int? level,
     int? experience,
@@ -51,6 +54,7 @@ class UserModel {
     int? money,
   }) {
     return UserModel(
+      uid: uid ?? this.uid,
       username: username ?? this.username,
       level: level ?? this.level,
       experience: experience ?? this.experience,

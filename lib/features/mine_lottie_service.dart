@@ -6,12 +6,12 @@ import 'package:blueberry_timer/models/mine_lottie_state.dart';
 
 /**
  * 광산 캐릭터의 로티 애니메이션을 관리하는 서비스입니다.
- * 
+ *
  * 이 서비스는 다음 기능들을 제공합니다:
  * - 광산 캐릭터 애니메이션 관리
  * - 채굴 상태에 따른 애니메이션 전환
  * - 캐릭터 상호작용 효과
- * 
+ *
  * 채굴 진행 상황에 따라 캐릭터의 모습이 변화하며,
  * 사용자의 채굴 활동을 시각적으로 표현합니다.
  */
@@ -69,6 +69,7 @@ class MineLottieService extends StateNotifier<MineLottieState> {
   }
 }
 
-final mineLottieServiceProvider = StateNotifierProvider<MineLottieService, MineLottieState>(
+final mineLottieServiceProvider =
+    StateNotifierProvider<MineLottieService, MineLottieState>(
   (ref) => MineLottieService(ref),
 );
