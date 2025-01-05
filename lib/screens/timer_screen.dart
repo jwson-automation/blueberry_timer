@@ -1,3 +1,4 @@
+import 'package:blueberry_timer/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/dialogs/user_profile_dialog.dart';
@@ -41,6 +42,8 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
     final messageService = ref.read(messageServiceProvider);
     final lottieState = ref.watch(lottieServiceProvider);
     final lottieNotifier = ref.read(lottieServiceProvider.notifier);
+    final userState = ref.watch(userProvider);
+    final userNotifier = ref.read(userProvider.notifier);
 
     // Check if timer is completed to collect random item
     if (_wasStudyPhase && !timerState.isStudyPhase) {
@@ -54,12 +57,31 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
             .read(userServiceProvider.notifier)
             .addExperience(studyTimeInMinutes);
 
+        // 경험치 업데이트 (1분당 10 경험치)
+        final experienceGained = studyTimeInMinutes * 10;
+        final newExperience = userState.experience + experienceGained;
+
+        // 새로운 레벨 계산 (100 경험치당 1레벨)
+        final newLevel = (newExperience / 100).floor() + 1;
+
+        // 경험치와 레벨 업데이트
+        userNotifier.updateExperience(newExperience);
+        if (newLevel != userState.level) {
+          userNotifier.updateLevel(newLevel);
+          // 레벨업 메시지 표시
+          messageService.showMessage(
+            context,
+            message: '축하합니다! 레벨 ${newLevel}이 되었습니다.',
+            backgroundColor: Colors.green.shade700,
+          );
+        }
+
         // 곡괭이 레벨에 따른 보상 지급
         final reward = ref.read(pickaxeServiceProvider).baseReward;
         ref.read(userServiceProvider.notifier).addMoney(reward);
 
-        // 아이템 수집 및 메시지 표시
-        _onRandomItemCollected(context, itemNotifier, messageService);
+        // 아이템 획득 로직
+        itemNotifier.collectRandomItem();
 
         // 로티 애니메이션 변경
         lottieNotifier.setPhase(false);

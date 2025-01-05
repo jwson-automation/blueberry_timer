@@ -90,6 +90,72 @@ class UserNotifier extends StateNotifier<UserModel> {
     );
   }
 
+  // 경험치와 레벨 동기화
+  Future<void> synchronizeExperienceAndLevel() async {
+    try {
+      // 서버의 동기화 상태 확인
+      final syncStatus = await _userRepository.checkSyncStatus();
+      
+      // 서버에 데이터가 있고 동기화가 필요한 경우
+      if (syncStatus['needsSync']) {
+        final serverExp = syncStatus['serverExperience'];
+        final serverLevel = syncStatus['serverLevel'];
+        
+        // 로컬 상태가 서버 상태와 다른 경우에만 업데이트
+        if (state.experience != serverExp || state.level != serverLevel) {
+          // 서버의 데이터로 로컬 상태 업데이트
+          state = state.copyWith(
+            experience: serverExp,
+            level: serverLevel,
+          );
+        }
+      } else {
+        // 서버에 데이터가 없는 경우, 현재 로컬 상태를 서버에 업데이트
+        await _userRepository.updateExperienceAndLevel(
+          experience: state.experience,
+          level: state.level,
+        );
+      }
+    } catch (e) {
+      print('경험치와 레벨 동기화 중 오류 발생: $e');
+      rethrow;
+    }
+  }
+
+  // 경험치 업데이트 (로컬 및 서버)
+  Future<void> updateExperience(int newExperience) async {
+    try {
+      // 로컬 상태 업데이트
+      state = state.copyWith(experience: newExperience);
+      
+      // 서버 상태 업데이트
+      await _userRepository.updateExperienceAndLevel(
+        experience: newExperience,
+        level: state.level,
+      );
+    } catch (e) {
+      print('경험치 업데이트 중 오류 발생: $e');
+      rethrow;
+    }
+  }
+
+  // 레벨 업데이트 (로컬 및 서버)
+  Future<void> updateLevel(int newLevel) async {
+    try {
+      // 로컬 상태 업데이트
+      state = state.copyWith(level: newLevel);
+      
+      // 서버 상태 업데이트
+      await _userRepository.updateExperienceAndLevel(
+        experience: state.experience,
+        level: newLevel,
+      );
+    } catch (e) {
+      print('레벨 업데이트 중 오류 발생: $e');
+      rethrow;
+    }
+  }
+
   // 레벨 계산 로직 (예시)
   int _calculateLevel(int experience) {
     // 간단한 레벨 계산 로직 (필요에 따라 조정)

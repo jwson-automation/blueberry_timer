@@ -86,6 +86,61 @@ class UserRepository {
     }
   }
 
+  // 경험치와 레벨 업데이트
+  Future<void> updateExperienceAndLevel({
+    required int experience,
+    required int level,
+  }) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw Exception('사용자가 로그인되어 있지 않습니다.');
+      }
+
+      final userRef = _firestore.collection('users').doc(user.uid);
+      await userRef.update({
+        'experience': experience,
+        'level': level,
+        'lastSyncTime': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      print('경험치와 레벨 업데이트 중 오류 발생: $e');
+      rethrow;
+    }
+  }
+
+  // 경험치와 레벨 동기화 상태 확인
+  Future<Map<String, dynamic>> checkSyncStatus() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw Exception('사용자가 로그인되어 있지 않습니다.');
+      }
+
+      final userRef = _firestore.collection('users').doc(user.uid);
+      final userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        return {
+          'needsSync': false,
+          'serverExperience': 0,
+          'serverLevel': 1,
+        };
+      }
+
+      final data = userDoc.data()!;
+      return {
+        'needsSync': true,
+        'serverExperience': data['experience'] ?? 0,
+        'serverLevel': data['level'] ?? 1,
+        'lastSyncTime': data['lastSyncTime'],
+      };
+    } catch (e) {
+      print('동기화 상태 확인 중 오류 발생: $e');
+      rethrow;
+    }
+  }
+
   // 임시 사용자 추가
   Future<UserModel> addTemporaryUser({
     required String name,
