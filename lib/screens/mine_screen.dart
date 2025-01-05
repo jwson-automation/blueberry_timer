@@ -123,7 +123,8 @@ class _MineScreenState extends ConsumerState<MineScreen>
               ),
               onPressed: () {
                 final userService = ref.read(userServiceProvider.notifier);
-                if (userService.state.profile.money >= pickaxe.upgradeCost) {
+                final userProfile = ref.read(userServiceProvider);
+                if (userProfile.profile.money >= pickaxe.upgradeCost) {
                   userService.useMoney(pickaxe.upgradeCost);
                   ref.read(pickaxeServiceProvider.notifier).upgrade();
                   ScaffoldMessenger.of(context).showSnackBar(

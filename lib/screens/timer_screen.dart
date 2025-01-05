@@ -192,14 +192,4 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
       ),
     );
   }
-
-  void _onRandomItemCollected(BuildContext context, ItemService itemService,
-      MessageService messageService) {
-    final message = itemService.collectRandomItem();
-    if (message != null) {
-      messageService.showSuccess(context, message);
-    } else {
-      messageService.showWarning(context, '아이템이 없어요!');
-    }
-  }
 }
