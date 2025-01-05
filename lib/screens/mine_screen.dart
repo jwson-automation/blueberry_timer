@@ -1,8 +1,6 @@
-import 'package:blueberry_timer/models/mine_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:blueberry_timer/features/mine_service.dart';
 import 'package:blueberry_timer/features/mine_lottie_service.dart';
 import 'package:blueberry_timer/features/user_service.dart';
 import 'package:blueberry_timer/features/pickaxe_service.dart';
@@ -36,8 +34,6 @@ class _MineScreenState extends ConsumerState<MineScreen>
 
   @override
   Widget build(BuildContext context) {
-    final mineState = ref.watch(mineServiceProvider);
-    final mineService = ref.read(mineServiceProvider.notifier);
     final mineLottieState = ref.watch(mineLottieServiceProvider);
     final pickaxe = ref.watch(pickaxeServiceProvider);
 
@@ -148,37 +144,6 @@ class _MineScreenState extends ConsumerState<MineScreen>
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildCollectedResourcesSection(MineState mineState) {
-    return Container(
-      height: 100,
-      color: Colors.transparent,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: mineState.collectedResources.length,
-        itemBuilder: (context, index) {
-          final resource = mineState.collectedResources[index];
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Image.asset(
-                  resource.imagePath,
-                  width: 50,
-                  height: 50,
-                  color: Colors.white,
-                ),
-                Text(
-                  resource.name,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          );
-        },
       ),
     );
   }

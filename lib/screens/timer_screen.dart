@@ -132,7 +132,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
       endDrawer: const AppDrawer(),
       body: Stack(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 100),
             child: Column(
               children: [
