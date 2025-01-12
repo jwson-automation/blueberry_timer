@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:blueberry_timer/models/mine_resource.dart';
-import 'package:blueberry_timer/models/mine_state.dart';
+import 'package:blueberry_timer/states/mine_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /**

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/models/user_model.dart';
-import 'package:blueberry_timer/models/user_state.dart';
+import 'package:blueberry_timer/states/user_state.dart';
 import 'package:blueberry_timer/repositories/user_repository.dart';
 
 /**
