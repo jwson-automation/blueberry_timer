@@ -1,15 +1,15 @@
-import 'package:blueberry_timer/models/mine_resource.dart';
+import 'package:blueberry_timer/models/mine_model.dart';
 import 'package:flutter/material.dart';
 
 class MineState {
-  final List<MineResource> availableResources;
-  final List<MineResource> collectedResources;
+  final List<MineModel> availableResources;
+  final List<MineModel> collectedResources;
   final int energyLevel;
   final int currentEnergy;
   final DateTime lastMineTime;
 
-  static const List<MineResource> _defaultResources = [
-    MineResource(
+  static const List<MineModel> _defaultResources = [
+    MineModel(
       name: '구리',
       imagePath: 'assets/mine/copper.png',
       baseValue: 10,
@@ -17,7 +17,7 @@ class MineState {
       // Colors.brown
       rarity: 0.5,
     ),
-    const MineResource(
+    const MineModel(
       name: '은',
       imagePath: 'assets/mine/silver.png',
       baseValue: 50,
@@ -25,7 +25,7 @@ class MineState {
       // Colors.grey
       rarity: 0.3,
     ),
-    const MineResource(
+    const MineModel(
       name: '금',
       imagePath: 'assets/mine/gold.png',
       baseValue: 100,
@@ -33,7 +33,7 @@ class MineState {
       // Colors.amber
       rarity: 0.15,
     ),
-    const MineResource(
+    const MineModel(
       name: '다이아몬드',
       imagePath: 'assets/mine/diamond.png',
       baseValue: 500,
@@ -52,8 +52,8 @@ class MineState {
   }) : lastMineTime = lastMineTime ?? DateTime.now();
 
   MineState copyWith({
-    List<MineResource>? availableResources,
-    List<MineResource>? collectedResources,
+    List<MineModel>? availableResources,
+    List<MineModel>? collectedResources,
     int? energyLevel,
     int? currentEnergy,
     DateTime? lastMineTime,

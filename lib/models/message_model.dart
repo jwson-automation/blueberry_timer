@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MessageInfo {
+class MessageModel {
   final String message;
   final Color backgroundColor;
 
-  MessageInfo({
+  MessageModel({
     required this.message,
     required this.backgroundColor,
   });

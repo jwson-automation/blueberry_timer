@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:blueberry_timer/models/mine_resource.dart';
+import 'package:blueberry_timer/models/mine_model.dart';
 import 'package:blueberry_timer/states/mine_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,7 +19,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class MineService extends StateNotifier<MineState> {
   MineService() : super(MineState());
 
-  MineResource? mine() {
+  MineModel? mine() {
     if (state.currentEnergy < 10) {
       return null; // 에너지 부족
     }
@@ -28,7 +28,7 @@ class MineService extends StateNotifier<MineState> {
     final miningResult = random.nextDouble();
 
     // 레어도에 따른 자원 획득 확률
-    MineResource? minedResource;
+    MineModel? minedResource;
     for (var resource in state.availableResources) {
       if (miningResult <= resource.rarity) {
         minedResource = resource;
@@ -47,7 +47,7 @@ class MineService extends StateNotifier<MineState> {
         collectedResources: updatedCollectedResources,
         currentEnergy: state.currentEnergy - 10,
         lastMineTime: DateTime.now(),
-      ) as MineResource;
+      ) as MineModel;
     }
 
     return null;

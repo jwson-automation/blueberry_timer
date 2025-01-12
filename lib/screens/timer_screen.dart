@@ -14,7 +14,7 @@ import 'package:blueberry_timer/widgets/current_rank_widget.dart';
 import 'package:blueberry_timer/widgets/timer/control_buttons.dart';
 import 'package:blueberry_timer/widgets/timer/equipped_items.dart';
 import 'package:blueberry_timer/widgets/timer/timer_display.dart';
-import 'package:blueberry_timer/models/message_info.dart';
+import 'package:blueberry_timer/models/message_model.dart';
 
 /// 타이머 화면
 class TimerScreen extends ConsumerStatefulWidget {
@@ -149,7 +149,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen>
             top: MediaQuery.of(context).size.height * 0.02,
             left: 0,
             right: 0,
-            child: ValueListenableBuilder<MessageInfo?>(
+            child: ValueListenableBuilder<MessageModel?>(
               valueListenable: messageService.messageNotifier,
               builder: (context, messageInfo, child) {
                 if (messageInfo == null) return const SizedBox.shrink();

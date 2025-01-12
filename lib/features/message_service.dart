@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:blueberry_timer/models/message_info.dart';
+import 'package:blueberry_timer/models/message_model.dart';
 
 /**
  * 앱 내의 알림 메시지를 처리하는 서비스입니다.
@@ -19,7 +19,7 @@ final messageServiceProvider = Provider((ref) => MessageService());
 /// 앱의 알림 메시지를 관리하는 서비스
 class MessageService {
   /// 현재 표시 중인 메시지 정보
-  final ValueNotifier<MessageInfo?> messageNotifier = ValueNotifier(null);
+  final ValueNotifier<MessageModel?> messageNotifier = ValueNotifier(null);
   Timer? _messageTimer;
 
   /// 기본 메시지 표시 메서드
@@ -31,7 +31,7 @@ class MessageService {
   }) {
     _messageTimer?.cancel();
     
-    messageNotifier.value = MessageInfo(
+    messageNotifier.value = MessageModel(
       message: message,
       backgroundColor: backgroundColor,
     );
