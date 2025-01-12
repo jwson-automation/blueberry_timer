@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:blueberry_timer/states/mine_lottie_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blueberry_timer/features/mine_service.dart';
-import 'package:blueberry_timer/models/mine_lottie_state.dart';
 
 /**
  * 광산 캐릭터의 로티 애니메이션을 관리하는 서비스입니다.

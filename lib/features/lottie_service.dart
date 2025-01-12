@@ -1,6 +1,6 @@
+import 'package:blueberry_timer/states/lottie_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:blueberry_timer/models/lottie_state.dart';
 
 /**
  * 로티 애니메이션을 관리하는 서비스입니다.
